@@ -4,8 +4,39 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Impulso Emprendedor — Scorecard de Emprendimiento</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
+  @font-face {
+    font-family: 'Petrov Sans';
+    src: url('fonts/PetrovSans-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Petrov Sans';
+    src: url('fonts/PetrovSans-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Petrov Sans';
+    src: url('fonts/PetrovSans-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Petrov Sans';
+    src: url('fonts/PetrovSans-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Petrov Sans';
+    src: url('fonts/PetrovSans-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+  }
+
   :root {
     --bg-primary: #0A0A0F;
     --bg-secondary: #12121A;
@@ -32,7 +63,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   
   body {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Petrov Sans', sans-serif;
     background: var(--bg-primary);
     color: var(--text-primary);
     min-height: 100vh;
@@ -87,33 +118,10 @@
     gap: 14px;
   }
 
-  .logo-icon {
-    width: 44px;
-    height: 44px;
-    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    font-weight: 700;
-    color: #fff;
-    box-shadow: 0 0 20px rgba(255,107,43,0.3);
-  }
-
-  .logo-text h1 {
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-    line-height: 1.2;
-  }
-
-  .logo-text span {
-    font-size: 11px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: 500;
+  .logo-area img {
+    height: 48px;
+    width: auto;
+    object-fit: contain;
   }
 
   .header-badge {
@@ -326,7 +334,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     color: var(--text-primary);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Petrov Sans', sans-serif;
     font-size: 14px;
     transition: all 0.3s;
     outline: none;
@@ -460,7 +468,7 @@
   .btn {
     padding: 14px 28px;
     border-radius: var(--radius);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Petrov Sans', sans-serif;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
@@ -877,11 +885,7 @@
   <!-- HEADER -->
   <header class="header">
     <div class="logo-area">
-      <div class="logo-icon">IE</div>
-      <div class="logo-text">
-        <h1>Impulso Emprendedor</h1>
-        <span>Scorecard de Emprendimiento</span>
-      </div>
+      <img src="img/logo.png" alt="Impulso Emprendedor">
     </div>
     <div class="header-badge">Comunidad Exclusiva</div>
   </header>
