@@ -1277,6 +1277,10 @@
 </div>
 
 <script>
+  // =========== CRM WEBHOOK CONFIG ===========
+  // Pega aquí la URL de tu webhook (Make, Zapier, n8n) que conecta con Odoo
+  const WEBHOOK_URL = 'TU_WEBHOOK_URL_AQUI';
+
   // =========== STATE ===========
   let currentStep = 1;
   const selectedChannels = new Set();
@@ -1437,14 +1441,42 @@
 
       clearInterval(loadingInterval);
       steps.forEach(s => { s.classList.remove('active'); s.classList.add('done'); s.querySelector('.icon').textContent = '✓'; });
-      
+
+      sendLeadToWebhook(data, analysis);
       setTimeout(() => renderResults(analysis, data), 800);
 
     } catch(err) {
       console.error(err);
       clearInterval(loadingInterval);
       const analysis = generateAlgorithmicScore(data);
+      sendLeadToWebhook(data, analysis);
       setTimeout(() => renderResults(analysis, data), 800);
+    }
+  }
+
+  // =========== CRM LEAD CAPTURE ===========
+  async function sendLeadToWebhook(data, analysis) {
+    if (!WEBHOOK_URL || WEBHOOK_URL === 'TU_WEBHOOK_URL_AQUI') return;
+
+    try {
+      await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contact_email: data.contactEmail,
+          company_name: data.companyName,
+          industry: data.industry,
+          stage: data.stage,
+          product_description: data.productDesc,
+          website: data.websiteUrl,
+          overall_score: analysis.overall_score,
+          recommended_package: analysis.recommended_package?.package_name,
+          form_data: data,
+          timestamp: new Date().toISOString()
+        })
+      });
+    } catch(e) {
+      console.error('Webhook error:', e);
     }
   }
 
