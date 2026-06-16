@@ -1318,7 +1318,8 @@
     <div class="btn-row">
       <button class="btn btn-ghost" onclick="goToStep(3)">← Atrás</button>
       <button class="btn btn-primary" id="analyzeBtn" onclick="runAnalysis()">
-        🔍 Analizar Mi Emprendimiento
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Analizar Mi Emprendimiento
       </button>
     </div>
   </div>
@@ -1351,8 +1352,24 @@
 
 <script>
   // =========== CRM WEBHOOK CONFIG ===========
-  // Pega aquí la URL de tu webhook (Make, Zapier, n8n) que conecta con Odoo
   const WEBHOOK_URL = 'https://hook.us2.make.com/liwcse7exmgsnfxc6cu5sz85k6jvf104';
+
+  // =========== ICON MAPS ===========
+  const CAT_ICONS = {
+    'Producto y Propuesta de Valor': `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.5-4.5 4.5-4.5 4.5s3-3 4.5-4.5c.5-.5 1.5-.5 2 0s.5 1.5 0 2z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 4.5 2.5 8.5 6.5 10.5L6.5 17 12 22l5.5-5-.5 4.5C21 19.5 22 16 22 12c0-5.5-4.5-10-10-10z"/></svg>`,
+    'Mercado y Oportunidad': `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
+    'Presencia Digital': `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+    'Ventas y Demanda': `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`,
+    'Modelo de Negocio': `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
+    'Equipo y Operaciones': `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`
+  };
+  const PKG_ICONS = {
+    'Impulso Lite': `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>`,
+    'Impulso Startup': `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.5-4.5 4.5-4.5 4.5s3-3 4.5-4.5c.5-.5 1.5-.5 2 0s.5 1.5 0 2z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 4.5 2.5 8.5 6.5 10.5L6.5 17 12 22l5.5-5-.5 4.5C21 19.5 22 16 22 12c0-5.5-4.5-10-10-10z"/></svg>`,
+    'Impulso Tech Pro': `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 1.08 13.89A10 10 0 0 1 4.93 19.07 10 10 0 0 1 3.85 5.18 10 10 0 0 1 17.74 4.07"/></svg>`,
+    'Impulso Escala': `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`,
+    'Impulso Aceleradora': `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>`
+  };
 
   // =========== STATE ===========
   let currentStep = 1;
@@ -1674,31 +1691,26 @@ Responde SOLO con este JSON exacto:
   const PACKAGES = {
     'Impulso Lite': {
       ideal: 'Ideas avanzadas, MVP temprano, founders en fase inicial',
-      emoji: '💡',
       color: '#3B82F6',
       stages: ['Idea / Pre-seed', 'MVP']
     },
     'Impulso Startup': {
       ideal: 'Founders con MVP funcional o primeros usuarios',
-      emoji: '🚀',
       color: '#8B5CF6',
       stages: ['MVP', 'Tracción Inicial']
     },
     'Impulso Tech Pro': {
       ideal: 'Startups con producto sólido que necesitan mejorar ventas, procesos y posicionamiento',
-      emoji: '⚙️',
       color: '#FF6B2B',
       stages: ['Tracción Inicial', 'Crecimiento']
     },
     'Impulso Escala': {
       ideal: 'Startups con tracción inicial que buscan escalar rápido',
-      emoji: '📈',
       color: '#10B981',
       stages: ['Crecimiento', 'Escalamiento']
     },
     'Impulso Aceleradora': {
       ideal: 'Startups listas para profesionalizarse y prepararse para inversión o expansión',
-      emoji: '🏆',
       color: '#F59E0B',
       stages: ['Escalamiento', 'Madurez']
     }
@@ -1821,12 +1833,12 @@ Responde SOLO con este JSON exacto:
       grade: grade,
       summary: `${data.companyName} en la industria de ${data.industry} muestra un nivel ${grade} de madurez emprendedora con un score de ${overall}/100. Las áreas más fuertes son ${scores[scores.length-1].name.toLowerCase()} (${scores[scores.length-1].score}) y ${scores[scores.length-2].name.toLowerCase()} (${scores[scores.length-2].score}), mientras que las mayores oportunidades de mejora están en ${scores[0].name.toLowerCase()} (${scores[0].score}) y ${scores[1].name.toLowerCase()} (${scores[1].score}). Invertir estratégicamente en estas áreas débiles puede acelerar significativamente tu crecimiento.`,
       categories: [
-        { name: 'Producto y Propuesta de Valor', emoji: '🚀', score: productScore, detail: `Tu producto está en etapa "${data.stage}" con ${data.operatingTime || 'tiempo no especificado'} de operación en la industria de ${data.industry}. ${data.websiteUrl ? 'Tener presencia web es un indicador positivo de madurez, aunque la calidad y conversión de tu sitio son factores clave que debes optimizar continuamente.' : 'No contar con sitio web es una barrera significativa — en B2B/SaaS, el 80% de compradores investigan online antes de contactar. Tu primer paso debería ser una landing page con propuesta de valor clara y formulario de contacto.'} ${data.differentiator && data.differentiator.length > 20 ? 'Tienes un diferenciador articulado, lo cual es buena señal para tu posicionamiento competitivo.' : 'Necesitas trabajar en articular un diferenciador claro y específico — sin esto, compites solo por precio.'}` },
-        { name: 'Mercado y Oportunidad', emoji: '📊', score: marketScore, detail: `Tu conocimiento de mercado es ${data.marketKnowledge}/10, ${parseInt(data.marketKnowledge) >= 7 ? 'lo cual demuestra una base sólida para tomar decisiones estratégicas' : 'lo cual indica una oportunidad importante de profundizar tu investigación antes de invertir más en adquisición'}. ${data.marketSize !== 'No lo sé' ? `Identificas un mercado ${data.marketSize}, lo cual te da marco para calcular tu TAM/SAM/SOM y establecer metas realistas.` : 'No tener claridad sobre el tamaño de mercado es un riesgo — sin TAM/SAM/SOM no puedes proyectar crecimiento ni convencer a inversionistas.'} ${data.competitors !== '0' ? `Tienes ${data.competitors} competidores identificados${data.competitorNames ? ' (' + data.competitorNames + ')' : ''}, lo cual es saludable — un mercado sin competencia generalmente indica falta de demanda.` : 'No identificar competidores puede ser una señal de alerta — casi siempre existen alternativas, aunque sean indirectas. Investiga cómo resuelven el problema hoy tus clientes potenciales.'}` },
-        { name: 'Presencia Digital', emoji: '🌐', score: digitalScore, detail: `Tienes ${data.digitalChannels.length} canales digitales activos con una consistencia de contenido de ${data.contentConsistency}/10. ${data.digitalChannels.length >= 5 ? 'Tu ecosistema multi-canal es robusto, pero la clave es medir qué canales generan pipeline real y concentrar esfuerzo ahí.' : data.digitalChannels.length >= 2 ? 'Tienes una base de canales razonable. Antes de expandir a más canales, asegúrate de dominar los actuales con métricas de conversión claras.' : 'Tu presencia digital es mínima, lo cual limita seriamente tu capacidad de generar demanda. Empieza con LinkedIn + sitio web como base para B2B, o Instagram + sitio web para B2C.'} ${data.digitalChannels.includes('Ninguno') ? 'Sin canales digitales activos, dependes al 100% de ventas directas y referidos, lo cual no es escalable.' : `Los canales activos (${data.digitalChannels.join(', ')}) son un buen punto de partida${!data.digitalChannels.includes('Email Marketing') ? ', aunque la ausencia de email marketing es un gap importante para nurturing de leads' : ''}.`}` },
-        { name: 'Ventas y Demanda', emoji: '📈', score: salesScore, detail: `Generas aproximadamente ${data.monthlyLeads} leads mensuales con un embudo de ventas ${data.salesFunnel || 'no definido'}. ${data.crmUsage === 'No' ? 'No usar CRM significa que estás perdiendo datos valiosos de cada interacción — cada lead sin seguimiento es revenue perdido. Implementar un CRM básico (HubSpot Free es suficiente para empezar) debería ser prioridad inmediata.' : data.crmUsage === 'Excel/Sheets' ? 'Manejar pipeline en Excel/Sheets funciona al inicio pero no escala — pierdes automatización, seguimiento y visibilidad. Migrar a un CRM real te dará estructura para crecer.' : 'Usar CRM demuestra madurez en gestión comercial, pero la herramienta solo funciona si los procesos detrás están bien definidos.'} ${parseInt(data.monthlyLeads) < 20 ? 'Con menos de 20 leads mensuales, necesitas urgentemente activar un motor de generación de demanda antes de optimizar el embudo.' : parseInt(data.monthlyLeads) < 50 ? 'Tu volumen de leads es razonable pero necesita escalar — enfócate en mejorar conversión antes de invertir más en top-of-funnel.' : 'Tu volumen de leads es sólido. El foco ahora debería ser en calidad y conversión, no en volumen.'}` },
-        { name: 'Modelo de Negocio', emoji: '💰', score: bizScore, detail: `Operas con modelo ${data.revenueModel} con MRR de ${data.mrr || 'no definido'} y ${data.customers || '0'} clientes activos. ${data.revenueModel === 'Aún no defino' ? 'No tener modelo de ingresos definido es tu gap más crítico — sin claridad en monetización, todo lo demás es especulación. Define cómo capturas valor antes de invertir en crecimiento.' : `El modelo ${data.revenueModel} es ${['Suscripción / SaaS', 'Freemium'].includes(data.revenueModel) ? 'atractivo para revenue recurrente y predecible' : 'válido, aunque requiere atención especial en la previsibilidad de ingresos'}.`} ${parseInt(data.growthRate) >= 15 ? `Tu crecimiento mensual de ${data.growthRate}% es prometedor — mantenerlo requiere infraestructura comercial sólida.` : parseInt(data.growthRate) >= 5 ? `Un crecimiento de ${data.growthRate}% mensual es aceptable pero necesita acelerarse. Identifica los cuellos de botella en tu funnel para destrabar el crecimiento.` : `Con ${data.growthRate}% de crecimiento mensual, necesitas revisar fundamentalmente tu estrategia de adquisición o tu product-market fit.`}` },
-        { name: 'Equipo y Operaciones', emoji: '👥', score: teamScore, detail: `Equipo de ${data.teamSize || 'tamaño no especificado'} con financiamiento ${data.funding || 'no especificado'}. ${data.teamSize === 'Solo founder' ? 'Como solo founder, cada hora es valiosa — necesitas definir qué actividades generan revenue directamente y delegar o automatizar todo lo demás. Tu siguiente contratación debería cubrir tu debilidad más grande (ventas, tech, o operaciones).' : data.teamSize === '2-5' ? 'Con un equipo pequeño, la claridad de roles y prioridades es fundamental. Asegúrate de que cada persona tenga métricas claras y que no haya duplicidad de esfuerzos.' : 'Tu equipo tiene masa crítica para ejecutar. El reto ahora es la estructura: procesos documentados, KPIs por rol y accountability semanal.'} ${data.funding === 'No' ? 'Estar bootstrapped tiene ventajas (disciplina, ownership), pero limita velocidad de crecimiento. Define si necesitas capital externo o si puedes crecer con revenue propio.' : `Haber levantado inversión (${data.funding}) indica validación del mercado, pero también genera presión por resultados. Asegúrate de que cada peso se invierte en actividades que acercan a tu siguiente milestone.`}` }
+        { name: 'Producto y Propuesta de Valor', score: productScore, detail: `Tu producto está en etapa "${data.stage}" con ${data.operatingTime || 'tiempo no especificado'} de operación en la industria de ${data.industry}. ${data.websiteUrl ? 'Tener presencia web es un indicador positivo de madurez, aunque la calidad y conversión de tu sitio son factores clave que debes optimizar continuamente.' : 'No contar con sitio web es una barrera significativa — en B2B/SaaS, el 80% de compradores investigan online antes de contactar. Tu primer paso debería ser una landing page con propuesta de valor clara y formulario de contacto.'} ${data.differentiator && data.differentiator.length > 20 ? 'Tienes un diferenciador articulado, lo cual es buena señal para tu posicionamiento competitivo.' : 'Necesitas trabajar en articular un diferenciador claro y específico — sin esto, compites solo por precio.'}` },
+        { name: 'Mercado y Oportunidad', score: marketScore, detail: `Tu conocimiento de mercado es ${data.marketKnowledge}/10, ${parseInt(data.marketKnowledge) >= 7 ? 'lo cual demuestra una base sólida para tomar decisiones estratégicas' : 'lo cual indica una oportunidad importante de profundizar tu investigación antes de invertir más en adquisición'}. ${data.marketSize !== 'No lo sé' ? `Identificas un mercado ${data.marketSize}, lo cual te da marco para calcular tu TAM/SAM/SOM y establecer metas realistas.` : 'No tener claridad sobre el tamaño de mercado es un riesgo — sin TAM/SAM/SOM no puedes proyectar crecimiento ni convencer a inversionistas.'} ${data.competitors !== '0' ? `Tienes ${data.competitors} competidores identificados${data.competitorNames ? ' (' + data.competitorNames + ')' : ''}, lo cual es saludable — un mercado sin competencia generalmente indica falta de demanda.` : 'No identificar competidores puede ser una señal de alerta — casi siempre existen alternativas, aunque sean indirectas. Investiga cómo resuelven el problema hoy tus clientes potenciales.'}` },
+        { name: 'Presencia Digital', score: digitalScore, detail: `Tienes ${data.digitalChannels.length} canales digitales activos con una consistencia de contenido de ${data.contentConsistency}/10. ${data.digitalChannels.length >= 5 ? 'Tu ecosistema multi-canal es robusto, pero la clave es medir qué canales generan pipeline real y concentrar esfuerzo ahí.' : data.digitalChannels.length >= 2 ? 'Tienes una base de canales razonable. Antes de expandir a más canales, asegúrate de dominar los actuales con métricas de conversión claras.' : 'Tu presencia digital es mínima, lo cual limita seriamente tu capacidad de generar demanda. Empieza con LinkedIn + sitio web como base para B2B, o Instagram + sitio web para B2C.'} ${data.digitalChannels.includes('Ninguno') ? 'Sin canales digitales activos, dependes al 100% de ventas directas y referidos, lo cual no es escalable.' : `Los canales activos (${data.digitalChannels.join(', ')}) son un buen punto de partida${!data.digitalChannels.includes('Email Marketing') ? ', aunque la ausencia de email marketing es un gap importante para nurturing de leads' : ''}.`}` },
+        { name: 'Ventas y Demanda', score: salesScore, detail: `Generas aproximadamente ${data.monthlyLeads} leads mensuales con un embudo de ventas ${data.salesFunnel || 'no definido'}. ${data.crmUsage === 'No' ? 'No usar CRM significa que estás perdiendo datos valiosos de cada interacción — cada lead sin seguimiento es revenue perdido. Implementar un CRM básico (HubSpot Free es suficiente para empezar) debería ser prioridad inmediata.' : data.crmUsage === 'Excel/Sheets' ? 'Manejar pipeline en Excel/Sheets funciona al inicio pero no escala — pierdes automatización, seguimiento y visibilidad. Migrar a un CRM real te dará estructura para crecer.' : 'Usar CRM demuestra madurez en gestión comercial, pero la herramienta solo funciona si los procesos detrás están bien definidos.'} ${parseInt(data.monthlyLeads) < 20 ? 'Con menos de 20 leads mensuales, necesitas urgentemente activar un motor de generación de demanda antes de optimizar el embudo.' : parseInt(data.monthlyLeads) < 50 ? 'Tu volumen de leads es razonable pero necesita escalar — enfócate en mejorar conversión antes de invertir más en top-of-funnel.' : 'Tu volumen de leads es sólido. El foco ahora debería ser en calidad y conversión, no en volumen.'}` },
+        { name: 'Modelo de Negocio', score: bizScore, detail: `Operas con modelo ${data.revenueModel} con MRR de ${data.mrr || 'no definido'} y ${data.customers || '0'} clientes activos. ${data.revenueModel === 'Aún no defino' ? 'No tener modelo de ingresos definido es tu gap más crítico — sin claridad en monetización, todo lo demás es especulación. Define cómo capturas valor antes de invertir en crecimiento.' : `El modelo ${data.revenueModel} es ${['Suscripción / SaaS', 'Freemium'].includes(data.revenueModel) ? 'atractivo para revenue recurrente y predecible' : 'válido, aunque requiere atención especial en la previsibilidad de ingresos'}.`} ${parseInt(data.growthRate) >= 15 ? `Tu crecimiento mensual de ${data.growthRate}% es prometedor — mantenerlo requiere infraestructura comercial sólida.` : parseInt(data.growthRate) >= 5 ? `Un crecimiento de ${data.growthRate}% mensual es aceptable pero necesita acelerarse. Identifica los cuellos de botella en tu funnel para destrabar el crecimiento.` : `Con ${data.growthRate}% de crecimiento mensual, necesitas revisar fundamentalmente tu estrategia de adquisición o tu product-market fit.`}` },
+        { name: 'Equipo y Operaciones', score: teamScore, detail: `Equipo de ${data.teamSize || 'tamaño no especificado'} con financiamiento ${data.funding || 'no especificado'}. ${data.teamSize === 'Solo founder' ? 'Como solo founder, cada hora es valiosa — necesitas definir qué actividades generan revenue directamente y delegar o automatizar todo lo demás. Tu siguiente contratación debería cubrir tu debilidad más grande (ventas, tech, o operaciones).' : data.teamSize === '2-5' ? 'Con un equipo pequeño, la claridad de roles y prioridades es fundamental. Asegúrate de que cada persona tenga métricas claras y que no haya duplicidad de esfuerzos.' : 'Tu equipo tiene masa crítica para ejecutar. El reto ahora es la estructura: procesos documentados, KPIs por rol y accountability semanal.'} ${data.funding === 'No' ? 'Estar bootstrapped tiene ventajas (disciplina, ownership), pero limita velocidad de crecimiento. Define si necesitas capital externo o si puedes crecer con revenue propio.' : `Haber levantado inversión (${data.funding}) indica validación del mercado, pero también genera presión por resultados. Asegúrate de que cada peso se invierte en actividades que acercan a tu siguiente milestone.`}` }
       ],
       recommendations: recoTemplates.slice(0, 4).map((r, i) => ({
         priority: i + 1,
@@ -1903,7 +1915,7 @@ Responde SOLO con este JSON exacto:
         <div class="cat-card fade-in stagger-${i+1}">
           <div class="cat-header">
             <div class="cat-title">
-              <span class="cat-emoji">${cat.emoji}</span>
+              <span class="cat-icon" style="color:${catColor};">${CAT_ICONS[cat.name] || ''}</span>
               <span class="cat-name">${cat.name}</span>
             </div>
             <span class="cat-score" style="color:${catColor}">${cat.score}</span>
@@ -1920,7 +1932,7 @@ Responde SOLO con este JSON exacto:
 
     // Recommendations
     html += `<div class="reco-section fade-in">
-      <h3>🎯 Recomendaciones Prioritarias</h3>`;
+      <h3 style="display:flex;align-items:center;gap:8px;"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Recomendaciones Prioritarias</h3>`;
 
     const priorityColors = [
       { bg: 'rgba(255,107,43,0.12)', color: 'var(--accent-primary)' },
@@ -1948,20 +1960,20 @@ Responde SOLO con este JSON exacto:
 
     // Package Recommendation
     const pkg = analysis.recommended_package || {};
-    const pkgInfo = PACKAGES[pkg.package_name] || { emoji: '🚀', color: '#FF6B2B', ideal: '' };
+    const pkgInfo = PACKAGES[pkg.package_name] || { color: '#FF6B2B', ideal: '' };
     const altPkgs = (analysis.matched_packages || []).filter(p => p !== pkg.package_name);
     
     html += `
       <div class="service-match fade-in" style="text-align:left;">
         <div style="text-align:center; margin-bottom:28px;">
-          <h3 style="font-size:22px;">🤝 Tu Paquete Recomendado de Impulso Emprendedor</h3>
+          <h3 style="font-size:22px;display:flex;align-items:center;justify-content:center;gap:8px;"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> Tu Paquete Recomendado de Impulso Emprendedor</h3>
           <p style="color:var(--text-secondary);">Basado en tu scorecard, etapa y necesidades específicas</p>
         </div>
 
         <div style="background:var(--bg-card); border:2px solid ${pkgInfo.color}40; border-radius:var(--radius-lg); padding:28px; margin-bottom:20px; position:relative; overflow:hidden;">
           <div style="position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, ${pkgInfo.color}, ${pkgInfo.color}80);"></div>
           <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
-            <div style="width:52px; height:52px; border-radius:12px; background:${pkgInfo.color}18; display:flex; align-items:center; justify-content:center; font-size:26px;">${pkgInfo.emoji}</div>
+            <div style="width:52px; height:52px; border-radius:12px; background:${pkgInfo.color}18; display:flex; align-items:center; justify-content:center; color:${pkgInfo.color};">${PKG_ICONS[pkg.package_name] || ''}</div>
             <div>
               <div style="font-size:20px; font-weight:700; letter-spacing:-0.5px;">${pkg.package_name || 'Impulso Tech Pro'}</div>
               <div style="font-size:13px; color:var(--text-muted);">${pkgInfo.ideal}</div>
@@ -1975,10 +1987,10 @@ Responde SOLO con este JSON exacto:
         <div style="margin-bottom:24px;">
           <p style="font-size:13px; color:var(--text-muted); margin-bottom:10px; font-weight:500;">También puede interesarte:</p>
           ${altPkgs.map(altName => {
-            const altInfo = PACKAGES[altName] || { emoji: '📦', color: '#9B978F', ideal: '' };
+            const altInfo = PACKAGES[altName] || { color: '#9B978F', ideal: '' };
             return `
             <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:16px; display:flex; align-items:center; gap:12px;">
-              <div style="width:40px; height:40px; border-radius:10px; background:${altInfo.color}12; display:flex; align-items:center; justify-content:center; font-size:20px;">${altInfo.emoji}</div>
+              <div style="width:40px; height:40px; border-radius:10px; background:${altInfo.color}12; display:flex; align-items:center; justify-content:center; color:${altInfo.color};">${PKG_ICONS[altName] || ''}</div>
               <div>
                 <div style="font-size:15px; font-weight:600;">${altName}</div>
                 <div style="font-size:12px; color:var(--text-muted);">${altInfo.ideal}</div>
@@ -2000,7 +2012,7 @@ Responde SOLO con este JSON exacto:
         <p style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">Conoce todos nuestros paquetes</p>
         <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px;">
           ${Object.entries(PACKAGES).map(([name, info]) => `
-            <span style="padding:8px 16px; border-radius:100px; background:${info.color}10; border:1px solid ${info.color}25; color:${info.color}; font-size:13px; font-weight:500;">${info.emoji} ${name}</span>
+            <span style="padding:8px 16px; border-radius:100px; background:${info.color}10; border:1px solid ${info.color}25; color:${info.color}; font-size:13px; font-weight:500; display:inline-flex; align-items:center; gap:6px;">${PKG_ICONS[name] ? `<span style="display:flex;">${PKG_ICONS[name].replace('width="26" height="26"','width="14" height="14"')}</span>` : ''} ${name}</span>
           `).join('')}
         </div>
         <button class="btn btn-ghost" onclick="window.open('https://www.impulsoemprendedor.com.mx/servicios','_blank')" style="margin-top:12px; font-size:13px; color:var(--accent-primary);">
@@ -2012,8 +2024,8 @@ Responde SOLO con este JSON exacto:
     // Export
     html += `
       <div class="export-row fade-in">
-        <button class="btn btn-secondary" onclick="restartAssessment()">🔄 Evaluar Otro Emprendimiento</button>
-        <button class="btn btn-secondary" onclick="printResults()">📄 Descargar PDF</button>
+        <button class="btn btn-secondary" onclick="restartAssessment()"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Evaluar Otro Emprendimiento</button>
+        <button class="btn btn-secondary" onclick="printResults()"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Descargar PDF</button>
       </div>
     `;
 
@@ -2044,6 +2056,7 @@ Responde SOLO con este JSON exacto:
     }, 300);
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (typeof lucide !== 'undefined') lucide.createIcons();
   }
 
   function restartAssessment() {
@@ -2053,6 +2066,11 @@ Responde SOLO con este JSON exacto:
   function printResults() {
     window.print();
   }
+
+  // Initialize static Lucide icons
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  });
 </script>
 
 </body>
