@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Impulso Emprendedor — Scorecard de Emprendimiento</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>
   @font-face {
     font-family: 'Petrov Sans';
@@ -848,6 +849,75 @@
     from { opacity: 0; transform: scale(0.5); }
     to { opacity: 1; transform: scale(1); }
   }
+
+  .lucide {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+  .card-icon .lucide { width: 22px; height: 22px; }
+  .chip .lucide { width: 14px; height: 14px; margin-right: 2px; }
+  .cat-icon .lucide { width: 22px; height: 22px; }
+  .btn .lucide { width: 16px; height: 16px; }
+
+  body {
+    background: linear-gradient(135deg, #FBFBFD 0%, #F0F0F5 100%);
+  }
+
+  .card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+  }
+
+  .card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    box-shadow: 0 4px 16px rgba(255, 107, 43, 0.3);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 6px 20px rgba(255, 107, 43, 0.4);
+    transform: translateY(-1px);
+    opacity: 1;
+  }
+
+  .hero h2 {
+    background: linear-gradient(135deg, var(--text-primary) 0%, #3D3D40 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .score-ring-container {
+    filter: drop-shadow(0 8px 32px rgba(0,0,0,0.1));
+  }
+
+  .cat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  }
+
+  .step-item.active .step-num {
+    box-shadow: 0 0 0 4px rgba(255, 107, 43, 0.15);
+  }
 </style>
 </head>
 <body>
@@ -899,7 +969,7 @@
   <div class="screen active" id="screen1">
     <div class="card fade-in">
       <div class="card-header">
-        <div class="card-icon" style="background: rgba(255,107,43,0.12); color: var(--accent-primary);">🚀</div>
+        <div class="card-icon" style="background: rgba(255,107,43,0.12); color: var(--accent-primary);"><i data-lucide="rocket"></i></div>
         <div>
           <h3>Información del Producto</h3>
           <p>Cuéntanos sobre tu emprendimiento y producto principal</p>
@@ -984,7 +1054,7 @@
   <div class="screen" id="screen2">
     <div class="card fade-in">
       <div class="card-header">
-        <div class="card-icon" style="background: rgba(59,130,246,0.12); color: var(--accent-blue);">📊</div>
+        <div class="card-icon" style="background: rgba(59,130,246,0.12); color: var(--accent-blue);"><i data-lucide="bar-chart-2"></i></div>
         <div>
           <h3>Mercado y Competencia</h3>
           <p>Datos sobre tu mercado objetivo y posicionamiento</p>
@@ -1053,7 +1123,7 @@
   <div class="screen" id="screen3">
     <div class="card fade-in">
       <div class="card-header">
-        <div class="card-icon" style="background: rgba(139,92,246,0.12); color: var(--accent-purple);">🌐</div>
+        <div class="card-icon" style="background: rgba(139,92,246,0.12); color: var(--accent-purple);"><i data-lucide="globe"></i></div>
         <div>
           <h3>Presencia Digital</h3>
           <p>Tu huella digital y canales de adquisición</p>
@@ -1063,21 +1133,21 @@
       <div class="form-group">
         <label>Canales digitales activos <span class="required">*</span></label>
         <div class="chip-grid" id="channelChips">
-          <div class="chip" data-value="Sitio Web" onclick="toggleChip(this)">🌐 Sitio Web</div>
-          <div class="chip" data-value="LinkedIn" onclick="toggleChip(this)">💼 LinkedIn</div>
-          <div class="chip" data-value="Instagram" onclick="toggleChip(this)">📸 Instagram</div>
-          <div class="chip" data-value="Facebook" onclick="toggleChip(this)">📘 Facebook</div>
-          <div class="chip" data-value="TikTok" onclick="toggleChip(this)">🎵 TikTok</div>
-          <div class="chip" data-value="YouTube" onclick="toggleChip(this)">▶️ YouTube</div>
-          <div class="chip" data-value="Twitter/X" onclick="toggleChip(this)">𝕏 Twitter/X</div>
-          <div class="chip" data-value="Email Marketing" onclick="toggleChip(this)">📧 Email Mktg</div>
-          <div class="chip" data-value="Blog" onclick="toggleChip(this)">📝 Blog</div>
-          <div class="chip" data-value="Podcast" onclick="toggleChip(this)">🎙️ Podcast</div>
-          <div class="chip" data-value="WhatsApp Business" onclick="toggleChip(this)">💬 WhatsApp Biz</div>
-          <div class="chip" data-value="Google Ads" onclick="toggleChip(this)">🔍 Google Ads</div>
-          <div class="chip" data-value="Meta Ads" onclick="toggleChip(this)">📢 Meta Ads</div>
-          <div class="chip" data-value="SEO" onclick="toggleChip(this)">🎯 SEO</div>
-          <div class="chip" data-value="Ninguno" onclick="toggleChip(this)">❌ Ninguno</div>
+          <div class="chip" data-value="Sitio Web" onclick="toggleChip(this)"><i data-lucide="globe"></i> Sitio Web</div>
+          <div class="chip" data-value="LinkedIn" onclick="toggleChip(this)"><i data-lucide="linkedin"></i> LinkedIn</div>
+          <div class="chip" data-value="Instagram" onclick="toggleChip(this)"><i data-lucide="instagram"></i> Instagram</div>
+          <div class="chip" data-value="Facebook" onclick="toggleChip(this)"><i data-lucide="facebook"></i> Facebook</div>
+          <div class="chip" data-value="TikTok" onclick="toggleChip(this)"><i data-lucide="music-2"></i> TikTok</div>
+          <div class="chip" data-value="YouTube" onclick="toggleChip(this)"><i data-lucide="youtube"></i> YouTube</div>
+          <div class="chip" data-value="Twitter/X" onclick="toggleChip(this)"><i data-lucide="twitter"></i> Twitter/X</div>
+          <div class="chip" data-value="Email Marketing" onclick="toggleChip(this)"><i data-lucide="mail"></i> Email Mktg</div>
+          <div class="chip" data-value="Blog" onclick="toggleChip(this)"><i data-lucide="file-text"></i> Blog</div>
+          <div class="chip" data-value="Podcast" onclick="toggleChip(this)"><i data-lucide="mic"></i> Podcast</div>
+          <div class="chip" data-value="WhatsApp Business" onclick="toggleChip(this)"><i data-lucide="message-circle"></i> WhatsApp Biz</div>
+          <div class="chip" data-value="Google Ads" onclick="toggleChip(this)"><i data-lucide="search"></i> Google Ads</div>
+          <div class="chip" data-value="Meta Ads" onclick="toggleChip(this)"><i data-lucide="megaphone"></i> Meta Ads</div>
+          <div class="chip" data-value="SEO" onclick="toggleChip(this)"><i data-lucide="target"></i> SEO</div>
+          <div class="chip" data-value="Ninguno" onclick="toggleChip(this)"><i data-lucide="x-circle"></i> Ninguno</div>
         </div>
       </div>
 
@@ -1139,7 +1209,7 @@
   <div class="screen" id="screen4">
     <div class="card fade-in">
       <div class="card-header">
-        <div class="card-icon" style="background: rgba(16,185,129,0.12); color: var(--accent-green);">💰</div>
+        <div class="card-icon" style="background: rgba(16,185,129,0.12); color: var(--accent-green);"><i data-lucide="dollar-sign"></i></div>
         <div>
           <h3>Modelo de Negocio y Finanzas</h3>
           <p>Revenue, pricing y tracción financiera</p>
@@ -1229,14 +1299,14 @@
       <div class="form-group">
         <label>¿Qué es lo que más necesitas ahora mismo?</label>
         <div class="chip-grid" id="needsChips">
-          <div class="chip" data-value="Más clientes" onclick="toggleChip(this)">🎯 Más clientes</div>
-          <div class="chip" data-value="Mejor branding" onclick="toggleChip(this)">🎨 Mejor branding</div>
-          <div class="chip" data-value="Estrategia de ventas" onclick="toggleChip(this)">📈 Estrategia de ventas</div>
-          <div class="chip" data-value="Marketing digital" onclick="toggleChip(this)">📱 Marketing digital</div>
-          <div class="chip" data-value="CRM / Procesos" onclick="toggleChip(this)">⚙️ CRM / Procesos</div>
-          <div class="chip" data-value="Inversión" onclick="toggleChip(this)">💰 Levantar inversión</div>
-          <div class="chip" data-value="Producto / Tech" onclick="toggleChip(this)">💻 Producto / Tech</div>
-          <div class="chip" data-value="Internacionalización" onclick="toggleChip(this)">🌎 Internacionalización</div>
+          <div class="chip" data-value="Más clientes" onclick="toggleChip(this)"><i data-lucide="target"></i> Más clientes</div>
+          <div class="chip" data-value="Mejor branding" onclick="toggleChip(this)"><i data-lucide="palette"></i> Mejor branding</div>
+          <div class="chip" data-value="Estrategia de ventas" onclick="toggleChip(this)"><i data-lucide="trending-up"></i> Estrategia de ventas</div>
+          <div class="chip" data-value="Marketing digital" onclick="toggleChip(this)"><i data-lucide="smartphone"></i> Marketing digital</div>
+          <div class="chip" data-value="CRM / Procesos" onclick="toggleChip(this)"><i data-lucide="settings-2"></i> CRM / Procesos</div>
+          <div class="chip" data-value="Inversión" onclick="toggleChip(this)"><i data-lucide="dollar-sign"></i> Levantar inversión</div>
+          <div class="chip" data-value="Producto / Tech" onclick="toggleChip(this)"><i data-lucide="monitor"></i> Producto / Tech</div>
+          <div class="chip" data-value="Internacionalización" onclick="toggleChip(this)"><i data-lucide="globe-2"></i> Internacionalización</div>
         </div>
       </div>
 
@@ -1250,7 +1320,7 @@
     <div class="btn-row">
       <button class="btn btn-ghost" onclick="goToStep(3)">← Atrás</button>
       <button class="btn btn-primary" id="analyzeBtn" onclick="runAnalysis()">
-        🔍 Analizar Mi Emprendimiento
+        <i data-lucide="sparkles"></i> Analizar Mi Emprendimiento
       </button>
     </div>
   </div>
@@ -1285,6 +1355,24 @@
   // =========== CRM WEBHOOK CONFIG ===========
   // Pega aquí la URL de tu webhook (Make, Zapier, n8n) que conecta con Odoo
   const WEBHOOK_URL = 'https://hook.us2.make.com/liwcse7exmgsnfxc6cu5sz85k6jvf104';
+
+  // =========== ICON MAPS ===========
+  const CAT_ICONS = {
+    'Producto y Propuesta de Valor': `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.5-4.5 4.5-4.5 4.5s3-3 4.5-4.5c.5-.5 1.5-.5 2 0s.5 1.5 0 2z"/><path d="M12 2c-5 0-9 4-9 9 0 3.7 2.2 7 5.4 8.6L6.9 15 12 19l5.1-4 1 4.6C21.8 18 24 14.7 24 11c0-5-4-9-12-9z"/></svg>`,
+    'Mercado y Oportunidad': `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
+    'Presencia Digital': `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+    'Ventas y Demanda': `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`,
+    'Modelo de Negocio': `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
+    'Equipo y Operaciones': `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`
+  };
+
+  const PKG_ICONS = {
+    'Impulso Lite': `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>`,
+    'Impulso Startup': `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.5-4.5 4.5-4.5 4.5s3-3 4.5-4.5c.5-.5 1.5-.5 2 0s.5 1.5 0 2z"/><path d="M12 2c-5 0-9 4-9 9 0 3.7 2.2 7 5.4 8.6L6.9 15 12 19l5.1-4 1 4.6C21.8 18 24 14.7 24 11c0-5-4-9-12-9z"/></svg>`,
+    'Impulso Tech Pro': `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 1.08 13.89A10 10 0 0 1 4.93 19.07 10 10 0 0 1 3.85 5.18 10 10 0 0 1 17.74 4.07"/></svg>`,
+    'Impulso Escala': `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`,
+    'Impulso Aceleradora': `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>`
+  };
 
   // =========== STATE ===========
   let currentStep = 1;
@@ -1835,7 +1923,7 @@ Responde SOLO con este JSON exacto:
         <div class="cat-card fade-in stagger-${i+1}">
           <div class="cat-header">
             <div class="cat-title">
-              <span class="cat-emoji">${cat.emoji}</span>
+              <span class="cat-icon" style="display:flex;align-items:center;color:${catColor};">${CAT_ICONS[cat.name] || ''}</span>
               <span class="cat-name">${cat.name}</span>
             </div>
             <span class="cat-score" style="color:${catColor}">${cat.score}</span>
@@ -1852,7 +1940,7 @@ Responde SOLO con este JSON exacto:
 
     // Recommendations
     html += `<div class="reco-section fade-in">
-      <h3>🎯 Recomendaciones Prioritarias</h3>`;
+      <h3><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:6px;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Recomendaciones Prioritarias</h3>`;
 
     const priorityColors = [
       { bg: 'rgba(255,107,43,0.12)', color: 'var(--accent-primary)' },
@@ -1886,14 +1974,14 @@ Responde SOLO con este JSON exacto:
     html += `
       <div class="service-match fade-in" style="text-align:left;">
         <div style="text-align:center; margin-bottom:28px;">
-          <h3 style="font-size:22px;">🤝 Tu Paquete Recomendado de Impulso Emprendedor</h3>
+          <h3 style="font-size:22px;"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:6px;"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg> Tu Paquete Recomendado de Impulso Emprendedor</h3>
           <p style="color:var(--text-secondary);">Basado en tu scorecard, etapa y necesidades específicas</p>
         </div>
 
         <div style="background:var(--bg-card); border:2px solid ${pkgInfo.color}40; border-radius:var(--radius-lg); padding:28px; margin-bottom:20px; position:relative; overflow:hidden;">
           <div style="position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, ${pkgInfo.color}, ${pkgInfo.color}80);"></div>
           <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
-            <div style="width:52px; height:52px; border-radius:12px; background:${pkgInfo.color}18; display:flex; align-items:center; justify-content:center; font-size:26px;">${pkgInfo.emoji}</div>
+            <div style="width:52px; height:52px; border-radius:12px; background:${pkgInfo.color}18; display:flex; align-items:center; justify-content:center;">${PKG_ICONS[pkg.package_name] || ''}</div>
             <div>
               <div style="font-size:20px; font-weight:700; letter-spacing:-0.5px;">${pkg.package_name || 'Impulso Tech Pro'}</div>
               <div style="font-size:13px; color:var(--text-muted);">${pkgInfo.ideal}</div>
@@ -1910,7 +1998,7 @@ Responde SOLO con este JSON exacto:
             const altInfo = PACKAGES[altName] || { emoji: '📦', color: '#9B978F', ideal: '' };
             return `
             <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:16px; display:flex; align-items:center; gap:12px;">
-              <div style="width:40px; height:40px; border-radius:10px; background:${altInfo.color}12; display:flex; align-items:center; justify-content:center; font-size:20px;">${altInfo.emoji}</div>
+              <div style="width:40px; height:40px; border-radius:10px; background:${altInfo.color}12; display:flex; align-items:center; justify-content:center;">${PKG_ICONS[altName] || ''}</div>
               <div>
                 <div style="font-size:15px; font-weight:600;">${altName}</div>
                 <div style="font-size:12px; color:var(--text-muted);">${altInfo.ideal}</div>
@@ -1932,7 +2020,7 @@ Responde SOLO con este JSON exacto:
         <p style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">Conoce todos nuestros paquetes</p>
         <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px;">
           ${Object.entries(PACKAGES).map(([name, info]) => `
-            <span style="padding:8px 16px; border-radius:100px; background:${info.color}10; border:1px solid ${info.color}25; color:${info.color}; font-size:13px; font-weight:500;">${info.emoji} ${name}</span>
+            <span style="padding:8px 16px; border-radius:100px; background:${info.color}10; border:1px solid ${info.color}25; color:${info.color}; font-size:13px; font-weight:500; display:inline-flex; align-items:center; gap:6px;">${PKG_ICONS[name] || ''} ${name}</span>
           `).join('')}
         </div>
         <button class="btn btn-ghost" onclick="window.open('https://www.impulsoemprendedor.com.mx/servicios','_blank')" style="margin-top:12px; font-size:13px; color:var(--accent-primary);">
@@ -1944,8 +2032,8 @@ Responde SOLO con este JSON exacto:
     // Export
     html += `
       <div class="export-row fade-in">
-        <button class="btn btn-secondary" onclick="restartAssessment()">🔄 Evaluar Otro Emprendimiento</button>
-        <button class="btn btn-secondary" onclick="printResults()">📄 Descargar PDF</button>
+        <button class="btn btn-secondary" onclick="restartAssessment()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:6px;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Evaluar Otro Emprendimiento</button>
+        <button class="btn btn-secondary" onclick="printResults()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Descargar PDF</button>
       </div>
     `;
 
@@ -1976,6 +2064,7 @@ Responde SOLO con este JSON exacto:
     }, 300);
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (typeof lucide !== 'undefined') lucide.createIcons();
   }
 
   function restartAssessment() {
@@ -1985,6 +2074,8 @@ Responde SOLO con este JSON exacto:
   function printResults() {
     window.print();
   }
+
+  if (typeof lucide !== 'undefined') lucide.createIcons();
 </script>
 
 </body>
