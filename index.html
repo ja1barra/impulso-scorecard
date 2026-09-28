@@ -1545,15 +1545,90 @@
     }
   }
 
+  // =========== LEAD REPORT (email para el equipo) ===========
+  function buildLeadReport(data, analysis) {
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const list = a => (Array.isArray(a) && a.length) ? a.join(', ') : '—';
+    const val = v => (v === undefined || v === null || v === '') ? '—' : v;
+    const cats = analysis.categories || [];
+    const recs = analysis.recommendations || [];
+    const pkg = analysis.recommended_package || {};
+
+    const rows = [
+      ['Contacto', `${val(data.contactName)} <${val(data.contactEmail)}>`],
+      ['Empresa', val(data.companyName)],
+      ['Industria', val(data.industry)],
+      ['Etapa', val(data.stage)],
+      ['Tiempo operando', val(data.operatingTime)],
+      ['Sitio web', val(data.websiteUrl)],
+      ['Descripción', val(data.productDesc)],
+      ['Mercado objetivo', val(data.targetMarket)],
+      ['Competidores', `${val(data.competitors)} (${val(data.competitorNames)})`],
+      ['Diferenciador', val(data.differentiator)],
+      ['Canales digitales', list(data.digitalChannels)],
+      ['CRM / Embudo', `${val(data.crmUsage)} / ${val(data.salesFunnel)}`],
+      ['Leads mensuales', val(data.monthlyLeads)],
+      ['Modelo de ingreso', val(data.revenueModel)],
+      ['MRR', val(data.mrr)],
+      ['Clientes', val(data.customers)],
+      ['Equipo', val(data.teamSize)],
+      ['Inversión', val(data.funding)],
+      ['Crecimiento mensual', data.growthRate ? `${data.growthRate}%` : '—'],
+      ['Necesidades', list(data.needs)]
+    ];
+
+    const subject = `Nuevo Scorecard: ${val(data.companyName)} — ${val(analysis.overall_score)}/100 (${val(analysis.grade)})`;
+
+    const text = [
+      subject,
+      '',
+      'DATOS DEL LEAD',
+      ...rows.map(([k, v]) => `- ${k}: ${v}`),
+      '',
+      `RESULTADO: ${val(analysis.overall_score)}/100 · Grado ${val(analysis.grade)}`,
+      val(analysis.summary),
+      '',
+      'CATEGORÍAS',
+      ...cats.map(c => `- ${c.name}: ${c.score}/100`),
+      '',
+      'RECOMENDACIONES',
+      ...recs.map(r => `${r.priority}. ${r.title}`),
+      '',
+      `PAQUETE RECOMENDADO: ${val(pkg.package_name)}`,
+      val(pkg.package_reason)
+    ].join('\n');
+
+    const html = `<div style="font-family:Arial,sans-serif;max-width:640px;color:#222">
+<h2 style="margin:0 0 4px">Nuevo Scorecard completado</h2>
+<p style="margin:0 0 16px;color:#666">${esc(val(data.companyName))} · <b>${esc(val(analysis.overall_score))}/100</b> (${esc(val(analysis.grade))})</p>
+<p>${esc(val(analysis.summary))}</p>
+<h3>Datos del lead</h3>
+<table style="border-collapse:collapse;width:100%;font-size:14px">${rows.map(([k, v]) =>
+  `<tr><td style="padding:4px 8px;border-bottom:1px solid #eee;color:#666;width:34%">${esc(k)}</td><td style="padding:4px 8px;border-bottom:1px solid #eee">${esc(v)}</td></tr>`).join('')}</table>
+<h3>Puntuación por categoría</h3>
+<ul>${cats.map(c => `<li>${esc(c.name)}: <b>${esc(c.score)}/100</b></li>`).join('')}</ul>
+<h3>Recomendaciones prioritarias</h3>
+<ol>${recs.map(r => `<li><b>${esc(r.title)}</b><br>${esc(r.description)}</li>`).join('')}</ol>
+<h3>Paquete recomendado: ${esc(val(pkg.package_name))}</h3>
+<p>${esc(val(pkg.package_reason))}</p>
+</div>`;
+
+    return { subject, text, html };
+  }
+
   // =========== CRM LEAD CAPTURE ===========
   async function sendLeadToWebhook(data, analysis) {
     if (!WEBHOOK_URL || WEBHOOK_URL === 'TU_WEBHOOK_URL_AQUI') return;
 
     try {
+      const report = buildLeadReport(data, analysis);
       await fetch(WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          report_subject: report.subject,
+          report_text: report.text,
+          report_html: report.html,
           contact_name: data.contactName,
           contact_email: data.contactEmail,
           company_name: data.companyName,
