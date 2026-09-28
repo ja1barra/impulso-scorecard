@@ -1351,8 +1351,8 @@
 </div>
 
 <script>
-  // =========== CRM WEBHOOK CONFIG ===========
-  const WEBHOOK_URL = 'https://hook.us2.make.com/liwcse7exmgsnfxc6cu5sz85k6jvf104';
+  // =========== LEAD ENDPOINT (Vercel Function → correo vía Resend) ===========
+  const LEAD_ENDPOINT = '/api/lead';
 
   // =========== ICON MAPS ===========
   const CAT_ICONS = {
@@ -1547,7 +1547,6 @@
 
   // =========== LEAD REPORT (email para el equipo) ===========
   function buildLeadReport(data, analysis) {
-    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     const list = a => (Array.isArray(a) && a.length) ? a.join(', ') : '—';
     const val = v => (v === undefined || v === null || v === '') ? '—' : v;
     const cats = analysis.categories || [];
@@ -1598,37 +1597,20 @@
       val(pkg.package_reason)
     ].join('\n');
 
-    const html = `<div style="font-family:Arial,sans-serif;max-width:640px;color:#222">
-<h2 style="margin:0 0 4px">Nuevo Scorecard completado</h2>
-<p style="margin:0 0 16px;color:#666">${esc(val(data.companyName))} · <b>${esc(val(analysis.overall_score))}/100</b> (${esc(val(analysis.grade))})</p>
-<p>${esc(val(analysis.summary))}</p>
-<h3>Datos del lead</h3>
-<table style="border-collapse:collapse;width:100%;font-size:14px">${rows.map(([k, v]) =>
-  `<tr><td style="padding:4px 8px;border-bottom:1px solid #eee;color:#666;width:34%">${esc(k)}</td><td style="padding:4px 8px;border-bottom:1px solid #eee">${esc(v)}</td></tr>`).join('')}</table>
-<h3>Puntuación por categoría</h3>
-<ul>${cats.map(c => `<li>${esc(c.name)}: <b>${esc(c.score)}/100</b></li>`).join('')}</ul>
-<h3>Recomendaciones prioritarias</h3>
-<ol>${recs.map(r => `<li><b>${esc(r.title)}</b><br>${esc(r.description)}</li>`).join('')}</ol>
-<h3>Paquete recomendado: ${esc(val(pkg.package_name))}</h3>
-<p>${esc(val(pkg.package_reason))}</p>
-</div>`;
 
-    return { subject, text, html };
+    return { subject, text };
   }
 
   // =========== CRM LEAD CAPTURE ===========
   async function sendLeadToWebhook(data, analysis) {
-    if (!WEBHOOK_URL || WEBHOOK_URL === 'TU_WEBHOOK_URL_AQUI') return;
-
     try {
       const report = buildLeadReport(data, analysis);
-      await fetch(WEBHOOK_URL, {
+      await fetch(LEAD_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           report_subject: report.subject,
           report_text: report.text,
-          report_html: report.html,
           contact_name: data.contactName,
           contact_email: data.contactEmail,
           company_name: data.companyName,
@@ -1643,7 +1625,7 @@
         })
       });
     } catch(e) {
-      console.error('Webhook error:', e);
+      console.error('Lead endpoint error:', e);
     }
   }
 

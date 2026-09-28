@@ -98,11 +98,24 @@ Para producción standalone, tienes dos opciones:
 1. **Proxy backend** (recomendado) — Crea un endpoint serverless (Vercel Function / Netlify Function) que haga la llamada a la API
 2. **Rate limiting** — Si es solo para tu comunidad privada, puedes usar la key directamente con restricciones de dominio
 
+## Reporte por correo de cada lead
+
+Al terminar el formulario, `index.html` envía el reporte a `/api/lead` (Vercel Function en `api/lead.js`), que lo manda por correo con [Resend](https://resend.com). Requiere desplegar en Vercel y definir estas variables de entorno:
+
+| Variable | Requerida | Descripción |
+|---|---|---|
+| `RESEND_API_KEY` | Sí | API key de Resend |
+| `LEAD_NOTIFY_EMAIL` | Sí | Correo(s) que reciben el reporte, separados por coma |
+| `LEAD_FROM_EMAIL` | No | Remitente (dominio verificado en Resend). Por defecto `onboarding@resend.dev`, que solo entrega al correo de tu cuenta de Resend |
+
+El correo lleva como *reply-to* el email del prospecto.
+
 ## Estructura del Repo
 
 ```
 impulso-scorecard/
 ├── index.html          # App completa (single-file)
+├── api/lead.js         # Vercel Function: envía el reporte por correo
 ├── README.md           # Este archivo
 ├── LICENSE             # Licencia
 └── .gitignore          # Git ignore
